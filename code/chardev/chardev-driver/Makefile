@@ -1,9 +1,9 @@
-KDIR = ../../src/linux-4.1.15
+KDIR = ../../../src/linux-4.1.15
 
 export ARCH=arm
 export CROSS_COMPILE=arm-poky-linux-gnueabi-
 
-obj-m += parameter.o
+obj-m += chardev-driver.o
 PWD?=$(shell pwd)
 all:
 	make -C $(KDIR) M=$(PWD) modules
