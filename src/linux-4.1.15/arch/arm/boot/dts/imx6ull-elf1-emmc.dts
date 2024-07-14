@@ -45,11 +45,11 @@
 			gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;
 			default-state = "off";
 		};
-		led2{
-			lable = "led2";
-			gpios = <&gpio1 0 GPIO_ACTIVE_LOW>;
-			default-state = "on";
-		};
+//		led2{
+//			lable = "led2";
+//			gpios = <&gpio1 0 GPIO_ACTIVE_LOW>;
+//			default-state = "on";
+//		};
 		led3{
 			lable = "led3";
 			gpios = <&gpio1 18 GPIO_ACTIVE_LOW>;
@@ -338,11 +338,30 @@
 		compatible = "test";
 		reg = <0x20ac000 0x0000004>;
 	};
+
+    /* 添加 LED 控制节点 */
+	ledtest:led1test {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "test";
+		reg = <0x20ac000 0x0000004>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_ledtest>;
+
+		gpio-ledtest = <&gpio1 0 GPIO_ACTIVE_LOW>;
+	};
 };
 
 /* 用&引用test节点，并向test节点追加内容，覆盖或者新增原节点的内容 */
 &test1 {
 	compatible = "test-1";
+	status = "okay";
+};
+
+/* 追加属性 */
+&ledtest {
+	compatible = "led-test";
 	status = "okay";
 };
 
@@ -561,8 +580,14 @@
 		pinctrl_leds0: leds0grp {
 			fsl,pins = <
 				MX6UL_PAD_JTAG_MOD__GPIO1_IO10		0x10b0
-				MX6UL_PAD_GPIO1_IO00__GPIO1_IO00	0x10b0
+//				MX6UL_PAD_GPIO1_IO00__GPIO1_IO00	0x10b0
 				MX6UL_PAD_UART1_CTS_B__GPIO1_IO18	0x10b0
+			>;
+		};
+/* 添加LED的pinctl，将GPIO1_IO0复用为GPIO功能 */
+		pinctrl_ledtest: ledtest {
+			fsl,pins = <
+				MX6UL_PAD_GPIO1_IO00__GPIO1_IO00	0x10b0
 			>;
 		};
 
