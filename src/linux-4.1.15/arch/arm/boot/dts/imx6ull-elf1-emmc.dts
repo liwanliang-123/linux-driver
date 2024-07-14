@@ -328,6 +328,22 @@
                         };
                 };
         };
+    /*
+	 * 在设备树根节点下面编写一个test节点
+	 * test1表示给test节点取别名
+	 */
+	test1:test {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "test";
+		reg = <0x20ac000 0x0000004>;
+	};
+};
+
+/* 用&引用test节点，并向test节点追加内容，覆盖或者新增原节点的内容 */
+&test1 {
+	compatible = "test-1";
+	status = "okay";
 };
 
 &cpu0 {
