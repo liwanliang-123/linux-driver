@@ -61,7 +61,7 @@
 			linux,default-trigger = "heartbeat";
 		};
 	};
-
+/*
 	gpio-keys {
 		compatible = "gpio-keys";
 		pinctrl-names = "default";
@@ -85,6 +85,18 @@
 		gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
 		};
 	};
+*/
+	test_key{
+		compatible = "test_key";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_key_test>;
+		gpios = <&gpio5 4 GPIO_ACTIVE_LOW>;
+
+/* 用于  irq_of_parse_and_map 函数申请GPIO中断号 */
+		interrupt-parent = <&gpio5>;
+		interrupts = <4 IRQ_TYPE_EDGE_BOTH>;
+	};
+
 	backlight {
 		compatible = "pwm-backlight";
 		pwms = <&pwm1 0 50000>;
@@ -914,12 +926,18 @@
 				MX6ULL_PAD_SNVS_TAMPER5__GPIO5_IO05	0x10b0
 			>;
 		};
-
+/*
 		pinctrl_keys: keysgrp {
 			fsl,pins = <
 				MX6ULL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x80000000
 				MX6ULL_PAD_SNVS_TAMPER2__GPIO5_IO02	0x80000000
 				MX6ULL_PAD_SNVS_TAMPER9__GPIO5_IO09	0x80000000
+			>;
+		};
+*/
+		pinctrl_key_test: keys{
+			fsl,pins = <
+				MX6ULL_PAD_SNVS_TAMPER4__GPIO5_IO04	0x80000000
 			>;
 		};
 
