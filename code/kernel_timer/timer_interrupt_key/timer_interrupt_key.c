@@ -27,12 +27,12 @@ DEFINE_TIMER(test_timer, timer_function, 0, 0);
  * 使用 flag 的作用是为了防止按一次按键但有可能是按了
  * 两次，而进入了两次中断服务函数，出现重复设置定时器的错误 
  */
-static int flag = 0;
+static int flag;
 
 static void timer_function(unsigned long data)
 {
      printk(KERN_INFO "%s,line: %d\n", __func__, __LINE__);
-     flag = 1;
+     flag = 0;
      // if(GPIO == 0){
      //      //在这里判断GPIO的状态
      // }
@@ -41,8 +41,9 @@ static void timer_function(unsigned long data)
 irq_handler_t test_key(int irq, void*args)
 {
      printk(KERN_INFO "callback %s , %d \n",__func__, __LINE__);
-
-     if(flag){
+     flag++;
+     if(flag > 1){
+          printk(KERN_INFO "flag > 1 \n");
           return IRQ_HANDLED;
      }
 
